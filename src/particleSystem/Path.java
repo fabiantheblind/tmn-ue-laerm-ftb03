@@ -14,7 +14,7 @@ public class Path {
 	  // A Path is an arraylist of points (PVector objects)
 	  public ArrayList<PVector> points;
 	  PApplet p;
-	  // A path has a radius, i.e how far is it ok for the boid to wander off
+	  // A path has a radius, i.e how far is it ok for the particle to wander off
 	  public float radius;
 
 	  public Path(PApplet p_) {
@@ -30,7 +30,21 @@ public class Path {
 	    points.add(point);
 	  }
 
+	  public int pathPoinsListSize(){
+		  return points.size();
+	  }
+	  
+	  public PVector getPathPointVector(int i){
+		  return points.get(i);
+	  }
+	  
+	  public void setRadius(float radius_){
+		  radius = radius_;	  
+	  }
+	  
+	  
 	  // Draw the path
+	  
 	  public void display() {
 
 	    // Draw the radius as thick lines and circles

@@ -37,6 +37,7 @@ public class Main extends PApplet {
 
 	int numPtcls = 500; // number of particles
 	int numObstcls = 13; // number of particles
+	public int counter;
 
 	Particle obstcls [] = new Particle[numObstcls]; // particle array
 	int obstRadius = 20;// the obstacles radius
@@ -51,13 +52,15 @@ public class Main extends PApplet {
 	PVector ColCenterVec;
 	
 	public float myForce = 0.5f;
+
+	public boolean writeImg = false;
+	public int imgNum = 0;
 	
 	
 	// standard processing setup function
 
 	public void setup() {
 		colorMode(HSB,360,100,100);
-	
 		background(0);
 		size(640,480);
 		smooth();
@@ -68,7 +71,7 @@ public class Main extends PApplet {
 	  // We are now making random Particles and storing them in an ArrayList ptclsList
 		initParticles(numPtcls);
 //		initObstacles(numObstcls);
-	ps = new ParticleSystem(this,1,new PVector(width/2,height/4),ptclsList);
+	ps = new ParticleSystem(this,1,new PVector(width/2,height/2),ptclsList);
 		
 		for (int i = 0; i < 5; i++) {
 		    repellers.add(new Repeller(this, random(width),random(height)));
@@ -77,13 +80,7 @@ public class Main extends PApplet {
 	  time = millis();
 	  
 	  
-//		 ColCenterVec = new PVector(width/2,height/2);
-//		 dist =  ColCenterVec.dist(ptclsList.get(0).loc);
-//		 println(dist);
-
-
-
-		 
+	  counter = 0;	 
 	}
 
 	
@@ -93,17 +90,28 @@ public class Main extends PApplet {
 		
 //		just a clearScreen method
 		cls();
+		
+//		Testing around
+		
 		Particle testPtcl = ptclsList.get(0);
 		testPtcl.setMaxspeed(myForce);
-		testPtcl.setRadius(10);
-		testPtcl.setColorCol1Grey(255, 100);
+		testPtcl.setRadius(5);
+		int h= floor(cos(counter%60)*360);
+		int a = 70;
+		float s = 20;
+		float b = 100;
+//		testPtcl.setColorCol1(h, s, b, a);
+		
+		repellers.get(0).setG(pow(10,3));
+//		repellers.get(0).setColor1(100, 50, 100, 100);
 
 //		testPtcl.setColorCol1(floor(sin(radians(90))*360),100, 100, 255);
-		
-		
 //		println("X: "+ptclsList.get(0).loc.x+" Y: "+ptclsList.get(0).loc.y);
 		
 	
+		
+		
+		
 		  for (int i = 0; i < ptclsList.size(); i++) {
 			    Particle ptkl =  ptclsList.get(i);
 			    // Path following and separation are worked on in this function
@@ -120,11 +128,12 @@ public class Main extends PApplet {
 
 		  // Apply repeller objects to all Particles
 		  ps.applyRepellers(repellers);
+
 		  // Run the Particle System
 		  ps.run();
 		  
 		  // Add more particles with an emitter
-//		  ps.addParticleEmitter();
+		  ps.addParticleEmitter();
 		  // use the setEmitterOrigin PVector to set the emitter.
 //		  I will soon build a real method for costumizing the emitted particles
 //		  ps.setEmitterOrigin(new PVector (width/2,height/2));
@@ -136,7 +145,9 @@ public class Main extends PApplet {
 		    r.drag();
 		  }
 
-//		  saveFrame("./data/ParticleSystem-####.tif");
+		  counter++;
+		  writeIMGs();
+		  
 	}
 	
 void cls(){
@@ -208,11 +219,17 @@ void cls(){
 	
 	
 	void newPtkl(float x, float y,ArrayList<Particle> ptclsList) {
+		
 //		  float maxforce = 0.3f;    // Maximum steering force
 //		  float maxspeed =  0.3f;    // Maximum speed
 //		  float myMaxspeed = Particle.maxspeed;
 //		  float myMaxforce = Particle.maxforce;//+random(-1f,1f);
-		  ptclsList.add(new Particle(this,new PVector(x,y),new PVector(x,y), ptclRadius));
+		Particle ptcl = new Particle(this,new PVector(x,y),new PVector(x,y), ptclRadius);
+		ptcl.setMaxforce(10f);
+		ptcl.setMaxforce(5f);
+		ptcl.setMaxspeed(2f);
+
+		  ptclsList.add(ptcl);
 //		or use:
 //		  ptclsList.add(new Particle(this,new PVector(x,y),new PVector(x,y), Particle.radius));
 
@@ -220,6 +237,15 @@ void cls(){
 	
 
 
+	public void writeIMGs(){
+		if(writeImg){
+			String sa = nf(imgNum,6);
+			  saveFrame("./data/ParticleSystem-"+sa+".tif");
+			  imgNum++;
+		}
+		
+	}
+	
 	public void keyPressed() {
 	  if (key == 'd') {
 //		do something fancy
@@ -245,7 +271,14 @@ void cls(){
 		}	
 		if (key == 'e' || key == 'E') {
 		exit();			
-		}	
+		}
+		if (key == 'i' || key == 'I') {
+			writeImg = true;
+		}
+		if (key == 'o' || key == 'O') {
+			writeImg = false;
+		}
+		
 		
 	}
 	public void mousePressed() {

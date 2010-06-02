@@ -21,13 +21,13 @@ public class ParticleSystem {
 
 	  
 
-//	  // A function to apply a force to all Particles
-//	  void applyForce(PVector f) {
-//	    for (int i = 0; i < particles.size(); i++) {
-//	      Particle ptcl = (Particle) particles.get(i);
-//	      ptcl.applyRepellForce(f);
-//	    }
-//	  }
+	  // A function to apply a force to all Particles
+	  void applyForce(PVector f) {
+	    for (int i = 0; i < particles.size(); i++) {
+	      Particle ptcl = (Particle) particles.get(i);
+	      ptcl.applyRepellForce(f);
+	    }
+	  }
 
 	  // A function for particles to interact with all Repellers
 	  public void applyRepellers(ArrayList<Repeller> repellers) {
@@ -56,8 +56,15 @@ public class ParticleSystem {
 	  }
 
 	  public void addParticleEmitter() {
-	    particles.add(new Particle(p,origin));
+		  
+		  PVector myOrigin = new PVector(p.random(p.width),p.random(p.height));
+		  Particle ptcl = new Particle(p,myOrigin);
+		  ptcl.setLifeTime(30);
+		  ptcl.setMaxspeed(0.03f);
+		  ptcl.setRadius(p.random(2));
+		  particles.add(ptcl);
 	  }
+	  
 	  
   public PVector setEmitterOrigin(PVector newOrigin){
 		  
