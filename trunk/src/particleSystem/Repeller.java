@@ -22,12 +22,18 @@ import processing.core.PVector;
 	boolean dragging = false; // Is the object being dragged?
 	boolean rollover = false; // Is the mouse over the ellipse?
 	PVector drag;  // holds the offset for when object is clicked on
+	public int color1;
+	public int color2;
+
 	
 	public Repeller(PApplet p_,float x, float y)  {
 		p = p_;
 	 loc = new PVector(x,y);
 	 drag = new PVector(0,0);
-	 G = 1000;
+	 G = 100;
+	 
+	 color1 = p.color(0,0, 100, 100);
+	 color2 = p.color(0,0, 100, 70);
 	}
 	
 	public Repeller(PApplet p_,float x, float y, float G_,float radius_)  {
@@ -36,13 +42,16 @@ import processing.core.PVector;
 	 drag = new PVector(0,0);
 	 G = G_;
 	 radius = radius_;
+	 
+	 color1 = p.color(0,0, 100, 100);
+	 color2 = p.color(0,0, 100, 70);
 	}
 	
 	
 	public void display() {
-	 p.stroke(255,100);
-	 if (dragging) p.fill (255,100);
-	 else if (rollover) p.fill(255,200);
+	 p.stroke(color1);
+	 if (dragging) p.fill (color1);
+	 else if (rollover) p.fill(color2);
 	 else p.noFill();
 	 p.ellipse(loc.x,loc.y,radius*2,radius*2);
 	}
@@ -66,6 +75,16 @@ import processing.core.PVector;
 		radius = radiusIn;
 	}
 	
+	
+	public void setColor1(float h, float s, float b, float a){
+		
+		color1 = p.color(h,s,b,a);
+	}
+	
+	public void setColor2(float h, float s, float b, float a){
+		
+		color2 = p.color(h,s,b,a);
+	}
 	
 	// The methods below are for mouse interaction
 	public void clicked(int mx, int my) {
