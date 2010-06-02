@@ -7,7 +7,7 @@ import processing.core.PVector;
 
 public class ParticleSystem {
 		PApplet p;
-	  ArrayList particles;    // An arraylist for all the particles
+	  ArrayList <Particle> particles;    // An arraylist for all the particles
 	  PVector origin;        // An origin point for where particles are birthed
 
 	  public ParticleSystem(PApplet p_, int num, PVector v, ArrayList<Particle> particles_) {
@@ -20,15 +20,14 @@ public class ParticleSystem {
 	  }
 
 	  
-	
 
-	  // A function to apply a force to all Particles
-	  void applyForce(PVector f) {
-	    for (int i = 0; i < particles.size(); i++) {
-	      Particle ptcl = (Particle) particles.get(i);
-	      ptcl.applyRepellForce(f);
-	    }
-	  }
+//	  // A function to apply a force to all Particles
+//	  void applyForce(PVector f) {
+//	    for (int i = 0; i < particles.size(); i++) {
+//	      Particle ptcl = (Particle) particles.get(i);
+//	      ptcl.applyRepellForce(f);
+//	    }
+//	  }
 
 	  // A function for particles to interact with all Repellers
 	  public void applyRepellers(ArrayList<Repeller> repellers) {

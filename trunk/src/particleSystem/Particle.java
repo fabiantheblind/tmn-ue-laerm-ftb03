@@ -8,24 +8,23 @@ import processing.core.PVector;
 public class Particle {
 	PApplet p;
 	public PVector loc;
-	 PVector vel;
-//	public float  radius;
-//	float gravity;
+	public PVector vel;
 	public PVector acc;
-//	private float maxforce;    // Maximum steering force
-//	private float maxspeed;    // Maximum speed
-	
-//	Detection Stuff
-//	private int X = Grid.X;
-//	private int Y = Grid.Y;
-	
-	public  float  gravity = 0.0f;
-	public  float maxforce = 0.3f;    // Maximum steering force
-	public  float maxspeed =  0.3f;    // Maximum speed
-	public  float radius;// = 5f;    // radius
-	private float lifeTime = 100;;
-//	public lifeTime = 100000.0f
 
+	public float  gravity = 0.0f;
+	public float maxforce = 0.3f;    // Maximum steering force
+	public float maxspeed =  0.3f;    // Maximum speed
+	public float radius;// = 5f;    // radius
+	public float lifeTime = 100;    // the lifetime of an Particle
+    public float mass = 0.5f; // The higher the mass the lesser the particles get pushed by repellers
+
+	
+	
+//	some graphical stuff
+	
+	public int col1;
+	public int col2;
+	
 
 	
 	
@@ -41,8 +40,9 @@ public class Particle {
 		acc = new PVector(0,0);
 		vel = new PVector(0,0);
 	    lifeTime = 100000.0f;
+		col1 = p.color(255,20);
+		 col2 = p.color(255,5);
 
-		
 	}
 	
 	public Particle(PApplet p_, PVector loc_, PVector vel_, float r_) {
@@ -56,8 +56,11 @@ public class Particle {
 		vel = new PVector(0,0);
 	    lifeTime = 100000.0f;
 
+		col1 = p.color(255,20);
+		 col2 = p.color(255,5);
 	}
 	
+//	this is the particle for the ParticleSystem Emitter
 	  public Particle(PApplet p_, PVector loc_) {
 		  p = p_;
 		  
@@ -67,16 +70,11 @@ public class Particle {
 //		    r = 10.0;
 		    lifeTime = 100000.0f;
 //		    maxspeed = 2;
+		    
+			col1 = p.color(255,20);
+			 col2 = p.color(255,5);
 		  }
 	
-//	Old update()
-//	public void update(){
-//		
-//		vel.y = vel.y + gravity;
-//		loc.y = loc.y +vel.y;
-//		loc.x = loc.x +vel.x;
-//		
-//	}
 	  // Is the particle still useful?
 	  boolean dead() {
 	    if (lifeTime <= 0.0) {
@@ -85,7 +83,74 @@ public class Particle {
 	      return false;
 	    }
 	  }
+	  
+//	  set the lifetime of the particle
+	  
+	  public void setLifeTime(float lifeTimeIn){
+		  
+		  lifeTime = lifeTimeIn;
+	  }
+	  
+	  
+////	  some graphical stuff in RGB
+//	  public void setColorCol1(int r, int g, int b, int a){
+//			col1 = p.color(r,g,b,a);
+//	  }
+//	  
+//	  public void setColorCol1Grey(int greyVal, int a){
+//			col1 = p.color(greyVal,a);
+//	  }
+//	  
+//	  public void setColorCol2(int r, int g, int b, int a){
+//			col2 = p.color(r,g,b,a);
+//	  }
+//	  
+//	  public void setColorCol2Grey(int greyVal, int a){
+//			col2 = p.color(greyVal,a);
+//	  }
+	  
+//	  some graphical stuff in HSB
+	  public void setColorCol1(int h, float s, float b, int a){
+			col1 = p.color(h,s,b,a);
+	  }
+	  
+	  public void setColorCol1Grey(int greyVal, int a){
+			col1 = p.color(360,0,greyVal,a);
+	  }
+	  
+	  public void setColorCol2(int h, float s, float b, int a){
+			col2 = p.color(h,s,b,a);
+	  }
+	  
+	  public void setColorCol2Grey(int greyVal, int a){
+			col2 = p.color(360,0,greyVal,a);
+	  }
+	  
+	  
+		public void setGravity(float inGravity){
+			gravity = inGravity;
+		}
+		
+		public void setMaxforce(float inMaxforce){
+			maxforce = inMaxforce;
+		}
+		
+		public void setMaxspeed(float inMaxspeed){
+			maxspeed = inMaxspeed;
+		}
+		
+		public void setRadius(float inRadius) {
+			radius = inRadius;
+		}
+		  
+		public void setMass(float massIn){
+			
+			mass = massIn;
+			
+		}
+	  
 	
+//	  this is for playing around with forces
 	public void myForce(ArrayList<Particle> obstacles){
 		
 		for(int i = 0;i<obstacles.size();i++){
@@ -141,14 +206,14 @@ public class Particle {
 	
 	public void display(){
 		p.noStroke();
-		p.fill(255,20);
+		p.fill(col1);
 		p.ellipse(loc.x, loc.y, radius, radius);
-		p.fill(255,5);
+		p.fill(col2);
 		p.ellipse(loc.x,loc.y,radius*1.5f,radius*1.5f);
 		
 	    for(int i=0;i<2;i++){
 	    	p.strokeWeight(3);
-	    	p.stroke(255,5);
+	    	p.stroke(col2);
 		    p.beginShape(p.LINES);
 		    p.vertex(loc.x+p.random(-radius*1.5f,radius*1.5f), loc.y+p.random(-radius*1.5f,radius*1.5f));
 		    p.vertex(loc.x+p.random(-radius*1.5f,radius*1.5f), loc.y+p.random(-radius*1.5f,radius*1.5f));
@@ -158,17 +223,7 @@ public class Particle {
 		
 	}
 	
-	public void setGravity(float inGravity){
-		gravity = inGravity;
-	}
-	
-	public void setMaxforce(float inMaxforce){
-		maxforce = inMaxforce;
-	}
-	
-	public void setMaxspeed(float inMaxspeed){
-		maxspeed = inMaxspeed;
-	}
+
 
 	  // A function to deal with path following and separation
 	  public void applyForces(ArrayList<Particle> ptkls, Path path) {
@@ -186,7 +241,7 @@ public class Particle {
 	  
 	  public void applyRepellForce(PVector force){
 		  
-		    float mass = 0.5f; // We aren't bothering with mass here
+//		    float mass = 0.001f; // We aren't bothering with mass here
 		    force.div(mass);
 		    acc.add(force);
   
@@ -211,7 +266,7 @@ public class Particle {
 	    PVector predictLoc = PVector.add(loc, predict);
 
 //	    // Draw the predicted location
-//	    if (CrowdPathFollowing.debug) {
+//	    if (debug) {
 //	      p.fill(0);
 //	      p.stroke(0);
 //	      p.line(loc.x,loc.y,predictLoc.x, predictLoc.y);
@@ -265,7 +320,7 @@ public class Particle {
 	    }
 
 //	    // Draw the debugging stuff
-//	    if (CrowdPathFollowing.debug) {
+//	    if (debug) {
 //	      // Draw normal location
 //	      p.fill(0);
 //	      p.noStroke();
@@ -383,7 +438,8 @@ public class Particle {
 	    }
 	    return steer;
 	  }
-	  
+
+
 	  
 
 

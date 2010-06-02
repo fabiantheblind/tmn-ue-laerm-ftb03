@@ -10,13 +10,13 @@ import processing.core.PVector;
 	public class Repeller {
 	
 	// Gravitational Constant
-	float G = 100;
+	public float G;
 	
 	// Location
 	PVector loc;
 	PApplet p;
 	
-	float r = 10;
+	public float radius = 10;
 	
 	// For mouse interaction
 	boolean dragging = false; // Is the object being dragged?
@@ -27,14 +27,24 @@ import processing.core.PVector;
 		p = p_;
 	 loc = new PVector(x,y);
 	 drag = new PVector(0,0);
+	 G = 1000;
 	}
+	
+	public Repeller(PApplet p_,float x, float y, float G_,float radius_)  {
+		p = p_;
+	 loc = new PVector(x,y);
+	 drag = new PVector(0,0);
+	 G = G_;
+	 radius = radius_;
+	}
+	
 	
 	public void display() {
 	 p.stroke(255,100);
 	 if (dragging) p.fill (255,100);
 	 else if (rollover) p.fill(255,200);
 	 else p.noFill();
-	 p.ellipse(loc.x,loc.y,r*2,r*2);
+	 p.ellipse(loc.x,loc.y,radius*2,radius*2);
 	}
 	
 	// Calculate a force to push particle away from repeller
@@ -48,10 +58,19 @@ import processing.core.PVector;
 	 return dir;
 	}  
 	
+	public void setG(float G_in){
+		G = G_in;
+	}
+	
+	public void setRadius(float radiusIn){
+		radius = radiusIn;
+	}
+	
+	
 	// The methods below are for mouse interaction
 	public void clicked(int mx, int my) {
 	 float d = p.dist(mx,my,loc.x,loc.y);
-	 if (d < r) {
+	 if (d < radius) {
 	   dragging = true;
 	   drag.x = loc.x-mx;
 	   drag.y = loc.y-my;
@@ -60,7 +79,7 @@ import processing.core.PVector;
 	
 	void rollover(int mx, int my) {
 	 float d = p.dist(mx,my,loc.x,loc.y);
-	 if (d < r) {
+	 if (d < radius) {
 	   rollover = true;
 	 } 
 	 else {
@@ -78,6 +97,8 @@ import processing.core.PVector;
 	   loc.y = p.mouseY + drag.y;
 	 }
 	}
+	
+	
 	
 	
 	}
