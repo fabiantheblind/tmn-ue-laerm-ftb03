@@ -32,27 +32,32 @@ public class Main extends PApplet {
 	ArrayList  <Particle>obstaclesList =  new ArrayList<Particle>();
 	ArrayList<Repeller> repellers = new ArrayList<Repeller>();
 
-//	just for unique filenames when saving a frame as jpg in the folder data
-	public float time;
+
 
 	int numPtcls = 500; // number of particles
-	int numObstcls = 13; // number of particles
 	public int counter;
+	public float dist;
+	float ptclRadius = 5;
+	
+	int numRepellers = 5;
 
-	Particle obstcls [] = new Particle[numObstcls]; // particle array
-	int obstRadius = 20;// the obstacles radius
-	 public float dist;
 
-	 float ptclRadius = 5;
+//	int numObstcls = 13; // number of particles
+//	Particle obstcls [] = new Particle[numObstcls]; // particle array
+//	int obstRadius = 20;// the obstacles radius
+//	private float obstForce = 0.3f;
+//	private float obstSpeed = 0.3f;
+	
 
-	private float obstForce = 0.3f;
 
-	private float obstSpeed = 0.3f;
+
 	
 	PVector ColCenterVec;
-	
 	public float myForce = 0.5f;
-
+	
+//	just for unique filenames when saving a frame as .jpg in the folder data
+	public float time;
+//	this is for exporting image sequences
 	public boolean writeImg = false;
 	public int imgNum = 0;
 	
@@ -71,10 +76,13 @@ public class Main extends PApplet {
 	  // We are now making random Particles and storing them in an ArrayList ptclsList
 		initParticles(numPtcls);
 //		initObstacles(numObstcls);
+		
+//		we need the particle system to interact with the repellers
 	ps = new ParticleSystem(this,1,new PVector(width/2,height/2),ptclsList);
 		
-		for (int i = 0; i < 5; i++) {
-		    repellers.add(new Repeller(this, random(width),random(height)));
+//		make some repellers
+		for(int i = 0; i <=360;i+=360/numRepellers){
+		    repellers.add(new Repeller(this,width / 2 + sin(radians(i))*100,height / 2 + cos(radians(i))*100));
 
 		  }
 	  time = millis();
@@ -199,22 +207,22 @@ void cls(){
 	}
 	
 //	Obstacles are just particles ; )
-	void initObstacles(int numObstcls){
-		  obstaclesList =  new ArrayList<Particle>();
-		  for (int i = 0; i < numObstcls; i++) {
-//			newObstcl(random(width),random(height),obstaclesList,obstRadius,1f,1f);
-//		  float myMaxspeed = Particle.maxspeed;
-//		  float myMaxforce = Particle.maxforce;//+random(-1f,1f);
-			  
-		Particle ptcle = new Particle(this,new PVector(random(width),random(height)),
-				new PVector(random(width),random(height)), obstRadius,obstSpeed,obstForce);
-		ptcle.setGravity(0); 
-		
-		obstaclesList.add(ptcle);			  
-			  
-		  }
-		
-	}
+//	void initObstacles(int numObstcls){
+//		  obstaclesList =  new ArrayList<Particle>();
+//		  for (int i = 0; i < numObstcls; i++) {
+////			newObstcl(random(width),random(height),obstaclesList,obstRadius,1f,1f);
+////		  float myMaxspeed = Particle.maxspeed;
+////		  float myMaxforce = Particle.maxforce;//+random(-1f,1f);
+//			  
+//		Particle ptcle = new Particle(this,new PVector(random(width),random(height)),
+//				new PVector(random(width),random(height)), obstRadius,obstSpeed,obstForce);
+//		ptcle.setGravity(0); 
+//		
+//		obstaclesList.add(ptcle);			  
+//			  
+//		  }
+//		
+//	}
 	
 	
 	
