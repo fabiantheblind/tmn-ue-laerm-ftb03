@@ -40,7 +40,7 @@ public class Main extends PApplet {
 
 	Particle obstcls [] = new Particle[numObstcls]; // particle array
 	int obstRadius = 20;// the obstacles radius
-
+	 public float dist;
 
 	 float ptclRadius = 5;
 
@@ -48,10 +48,15 @@ public class Main extends PApplet {
 
 	private float obstSpeed = 0.3f;
 	
+	PVector ColCenterVec;
+	
+	public float myForce = 0.5f;
+	
 	
 	// standard processing setup function
 
 	public void setup() {
+		colorMode(HSB,360,100,100);
 	
 		background(0);
 		size(640,480);
@@ -59,18 +64,26 @@ public class Main extends PApplet {
 		f = createFont("Gentium",12,true);
 
 	  // Call a function to generate new Path object with 12 segments
-		initCirclePath(12);
+		initCirclePath(23);
 	  // We are now making random Particles and storing them in an ArrayList ptclsList
 		initParticles(numPtcls);
 //		initObstacles(numObstcls);
 	ps = new ParticleSystem(this,1,new PVector(width/2,height/4),ptclsList);
 		
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 5; i++) {
 		    repellers.add(new Repeller(this, random(width),random(height)));
 
 		  }
 	  time = millis();
 	  
+	  
+//		 ColCenterVec = new PVector(width/2,height/2);
+//		 dist =  ColCenterVec.dist(ptclsList.get(0).loc);
+//		 println(dist);
+
+
+
+		 
 	}
 
 	
@@ -80,6 +93,15 @@ public class Main extends PApplet {
 		
 //		just a clearScreen method
 		cls();
+		Particle testPtcl = ptclsList.get(0);
+		testPtcl.setMaxspeed(myForce);
+		testPtcl.setRadius(10);
+		testPtcl.setColorCol1Grey(255, 100);
+
+//		testPtcl.setColorCol1(floor(sin(radians(90))*360),100, 100, 255);
+		
+		
+//		println("X: "+ptclsList.get(0).loc.x+" Y: "+ptclsList.get(0).loc.y);
 		
 	
 		  for (int i = 0; i < ptclsList.size(); i++) {
@@ -87,7 +109,9 @@ public class Main extends PApplet {
 			    // Path following and separation are worked on in this function
 			    ptkl.applyForces(ptclsList,path);
 				// Call the generic run method (update, borders, display, etc.)
+//			    ptkl.setColorCol1(255, 0, 0, 20);
 			    ptkl.run();
+
 			    
 			    // this is some own force tryout
 //			    ptkl.myForce(obstaclesList);
@@ -118,7 +142,7 @@ public class Main extends PApplet {
 void cls(){
 
 		noStroke();
-		fill(0,10);
+		fill(360,0,0,23);
 		rect(0,0,width,height);
 	}
 
@@ -170,9 +194,11 @@ void cls(){
 //			newObstcl(random(width),random(height),obstaclesList,obstRadius,1f,1f);
 //		  float myMaxspeed = Particle.maxspeed;
 //		  float myMaxforce = Particle.maxforce;//+random(-1f,1f);
+			  
 		Particle ptcle = new Particle(this,new PVector(random(width),random(height)),
 				new PVector(random(width),random(height)), obstRadius,obstSpeed,obstForce);
 		ptcle.setGravity(0); 
+		
 		obstaclesList.add(ptcle);			  
 			  
 		  }
@@ -198,6 +224,16 @@ void cls(){
 	  if (key == 'd') {
 //		do something fancy
 	  }
+	  
+	    if( key==CODED ){
+	        if( keyCode == UP ){ 
+	        	myForce += 0.1f;
+	        }
+	        if( keyCode == DOWN ){ 
+	        	myForce -= 0.1f;
+
+	        }
+	    }
 	}
 
 	
