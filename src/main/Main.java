@@ -54,12 +54,15 @@ public class Main extends PApplet {
 	
 	PVector ColCenterVec;
 	public float myForce = 0.5f;
+	public float mySpeed = 0.5f;
+
 	
 //	just for unique filenames when saving a frame as .jpg in the folder data
 	public float time;
 //	this is for exporting image sequences
 	public boolean writeImg = false;
 	public int imgNum = 0;
+
 	
 	
 	// standard processing setup function
@@ -103,12 +106,12 @@ public class Main extends PApplet {
 		
 		Particle testPtcl = ptclsList.get(0);
 		testPtcl.setMaxspeed(myForce);
-		testPtcl.setRadius(5);
-		int h= floor(cos(counter%60)*360);
+		testPtcl.setRadius(15);
+		int h= 200;
 		int a = 70;
 		float s = 20;
 		float b = 100;
-//		testPtcl.setColorCol1(h, s, b, a);
+		testPtcl.setColorCol1(h, s, b, a);
 		
 		repellers.get(0).setG(pow(10,3));
 //		repellers.get(0).setColor1(100, 50, 100, 100);
@@ -141,7 +144,9 @@ public class Main extends PApplet {
 		  ps.run();
 		  
 		  // Add more particles with an emitter
-		  ps.addParticleEmitter();
+//		  if false the particles are emitted over the whole screen
+//		  if true the emitter has a point origin
+//		  ps.addParticleEmitter(true);
 		  // use the setEmitterOrigin PVector to set the emitter.
 //		  I will soon build a real method for costumizing the emitted particles
 //		  ps.setEmitterOrigin(new PVector (width/2,height/2));
@@ -265,7 +270,12 @@ void cls(){
 	        }
 	        if( keyCode == DOWN ){ 
 	        	myForce -= 0.1f;
-
+	        }
+	        if( keyCode == LEFT ){ 
+	        	mySpeed += 0.1f;
+	        }
+	        if( keyCode == RIGHT ){ 
+	        	mySpeed -= 0.1f;
 	        }
 	    }
 	}
