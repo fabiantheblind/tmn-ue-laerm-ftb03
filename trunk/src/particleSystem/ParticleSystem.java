@@ -55,12 +55,24 @@ public class ParticleSystem {
 	    }
 	  }
 
-	  public void addParticleEmitter() {
+	  public void addParticleEmitter(boolean pointOrigin) {
 		  
-		  PVector myOrigin = new PVector(p.random(p.width),p.random(p.height));
-		  Particle ptcl = new Particle(p,myOrigin);
-		  ptcl.setLifeTime(30);
+		  Particle ptcl;
+		  
+	  if(pointOrigin){
+		   ptcl = new Particle(p,origin);
+
+		  }else {
+		
+			  PVector myOrigin = new PVector(p.random(p.width),p.random(p.height));
+
+		  ptcl = new Particle(p,myOrigin);
 		  ptcl.setMaxspeed(0.03f);
+		  ptcl.setRadius(p.random(2));
+		  
+		  }
+		  ptcl.setLifeTime(p.random(23,42));
+		  ptcl.setMaxspeed(0.7f);
 		  ptcl.setRadius(p.random(2));
 		  particles.add(ptcl);
 	  }
