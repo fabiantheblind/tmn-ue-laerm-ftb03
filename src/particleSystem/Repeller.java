@@ -13,7 +13,7 @@ import processing.core.PVector;
 	public float G;
 	
 	// Location
-	PVector loc;
+	public PVector loc;
 	PApplet p;
 	
 	public float radius = 10;
@@ -75,6 +75,12 @@ import processing.core.PVector;
 		radius = radiusIn;
 	}
 	
+	public float getG(){	
+		return G;
+	}
+	public float getRadius(){	
+		return radius;
+	}
 	
 	public void setColor1(float h, float s, float b, float a){
 		
